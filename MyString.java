@@ -63,11 +63,14 @@ public class MyString {
      */
     public static String spacedString(String str) {
         String newstr = "";
+        
+        if (str.length() > 0) {
         for (int i = 0; i < str.length(); i++) {
             newstr += str.charAt(i) + " ";
         }
-        String result = newstr.substring(0, newstr.length() - 1);
-        return result;
+        newstr = newstr.substring(0, newstr.length() - 1);
+    }
+        return newstr;
     }
   
     /**
