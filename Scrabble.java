@@ -70,20 +70,19 @@ public class Scrabble {
 	public static int wordScore(String word) {
 		int score = 0;
 		String runi = "runi";
-		if (MyString.subsetOf(runi, word) == true) {
-			score = 1000;
-			return score;
+		if (MyString.subsetOf(runi, word)) {
+			score += 1000;
+			
 		}
 		else {
 			if (word.length() == HAND_SIZE) {
-			score = 50;
-			return score;
+			score += 50;
+			
 		}
 		else for (int i = 0; i < word.length(); i++) {
-			int ch = (int) word.charAt(i);
-			
-			score += SCRABBLE_LETTER_VALUES [ch-97];
+			score += SCRABBLE_LETTER_VALUES [word.charAt(i)-97];
 		}
+		score *= word.length();
 	}
 
 		return score;
@@ -120,10 +119,10 @@ public class Scrabble {
 			if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
 				hand = MyString.remove(hand, input); 
 				score += wordScore(input);
-				System.out.println("Current score: " + score + " points.");
+				System.out.println(input + " earned " + wordScore(input) + " points. Score: " + score + " points.");
 			}
 			else {
-				System.out.println("Plese enter a valid word");
+				System.out.println("Invalid word. Try again.");
 			}
 					
 		}
