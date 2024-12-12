@@ -48,7 +48,19 @@ public class Scrabble {
 
 	// Checks if the given word is in the dictionary.
 	public static boolean isWordInDictionary(String word) {
-		//// Replace the following statement with your code
+		if (NUM_OF_WORDS == 0) {
+			In in = new In(WORDS_FILE);
+			while (!in.isEmpty()) {
+				DICTIONARY[NUM_OF_WORDS++] = in.readString().toLowerCase();
+			}
+		}
+		for (int i = 0; i < DICTIONARY.length; i++) {
+			if (DICTIONARY[i] != null) {
+				if (DICTIONARY[i].toLowerCase().equals(word)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	
@@ -57,16 +69,35 @@ public class Scrabble {
 	// If the word includes the sequence "runi", adds 1000 points to the game.
 	public static int wordScore(String word) {
 		int score = 0;
-		for (int i = 0; )
-		return 0;
+		String runi = "runi";
+		if (MyString.subsetOf(runi, word) == true) {
+			score = 1000;
+			return score;
+		}
+		else {
+			if (word.length() == HAND_SIZE) {
+			score = 50;
+			return score;
+		}
+		else for (int i = 0; i < word.length(); i++) {
+			int ch = (int) word.charAt(i);
+			
+			score += SCRABBLE_LETTER_VALUES [ch-97];
+		}
+	}
+
+		return score;
 	}
 
 	// Creates a random hand of length (HAND_SIZE - 2) and then inserts
 	// into it, at random indexes, the letters 'a' and 'e'
 	// (these two vowels make it easier for the user to construct words)
 	public static String createHand() {
-		//// Replace the following statement with your code
-		return null;
+	String hand = MyString.randomStringOfLetters(HAND_SIZE - 2);
+	hand = MyString.insertRandomly('a', hand);
+	hand = MyString.insertRandomly('e', hand);
+	
+		return hand;
 	}
 	
     // Runs a single hand in a Scrabble game. Each time the user enters a valid word:
@@ -74,7 +105,6 @@ public class Scrabble {
     // 2. The user gets the Scrabble points of the entered word.
     // 3. The user is prompted to enter another word, or '.' to end the hand. 
 	public static void playHand(String hand) {
-		int n = hand.length();
 		int score = 0;
 		// Declares the variable in to refer to an object of type In, and initializes it to represent
 		// the stream of characters coming from the keyboard. Used for reading the user's inputs.   
@@ -86,9 +116,16 @@ public class Scrabble {
 			// non-whitespace characters. Whitespace is either space characters, or  
 			// end-of-line characters.
 			String input = in.readString();
-			//// Replace the following break statement with code
-			//// that completes the hand playing loop
-			break;
+			if (input.equals(".")) break;
+			if (isWordInDictionary(input) && MyString.subsetOf(input, hand)) {
+				hand = MyString.remove(hand, input); 
+				score += wordScore(input);
+				System.out.println("Current score: " + score + " points.");
+			}
+			else {
+				System.out.println("Plese enter a valid word");
+			}
+					
 		}
 		if (hand.length() == 0) {
 	        System.out.println("Ran out of letters. Total score: " + score + " points");
@@ -111,9 +148,13 @@ public class Scrabble {
 			// Gets the user's input, which is all the characters entered by 
 			// the user until the user enter the ENTER character.
 			String input = in.readString();
-			//// Replace the following break statement with code
-			//// that completes the game playing loop
-			break;
+			if (input.equals("n")) {
+				playHand(createHand());
+			}
+			if (input.equals("e")) break;
+			else {
+				System.out.println("Error. please enter n to deal a new hand, or e to end the game: ");
+			}
 		}
 	}
 
