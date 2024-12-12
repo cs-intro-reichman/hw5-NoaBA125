@@ -118,18 +118,18 @@ public class Scrabble {
 			// end-of-line characters.
 			String input = in.readString();
 			if (input.equals(".")) break;
-			if (!MyString.subsetOf(input, hand)) {
+			else if (!MyString.subsetOf(input, hand)) {
 				System.out.println("Invalid word. Try again.");
 
 			}
 			else {
 				if (isWordInDictionary(input)) {
-					hand = MyString.remove(hand, input); 
 				score += wordScore(input);
 				System.out.println(input + " earned " + wordScore(input) + " points. Score: " + score + " points.");
+				hand = MyString.remove(hand, input); 
 				}
 				else {
-					System.out.println("Invalid word. Try again.");
+					System.out.println("No such word in thr dictionary. Try again.");
 				}
 			}
 					
